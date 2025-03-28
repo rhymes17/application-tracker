@@ -1,8 +1,17 @@
 import { CiSearch } from 'react-icons/ci';
 import Rahul from '../../assets/rahul.jpeg';
-import { Filter, statusFilter } from './Filter';
+import { Filter } from './Filter/Filter';
+import { useState } from 'react';
+import { APPLICATION_STATUS, filterTypes, MONTHS, ORDER } from './Filter/utils';
 
 const ApplicationList = () => {
+  const [selectedApplicationStatus, setSelectedApplicationStatus] =
+    useState<APPLICATION_STATUS>(APPLICATION_STATUS.NONE);
+  const [selectedMonth, setSelectedMonth] = useState<MONTHS>(MONTHS.NONE);
+  const [selectedSortFilter, setSelectedSortFilter] = useState<ORDER>(
+    ORDER.NONE,
+  );
+
   return (
     <div className="col-span-5 flex h-full flex-col gap-4 px-4">
       {/* Title */}
@@ -33,11 +42,22 @@ const ApplicationList = () => {
       {/* Filters */}
       <div className="flex items-start justify-between gap-2 px-2">
         <div className="flex items-start gap-2 px-2">
-          <Filter title="Any Status" filterOptions={statusFilter} />
-          <Filter title="Month" filterOptions={statusFilter} />
+          <Filter
+            selectedOption={selectedApplicationStatus}
+            setSelectedOption={setSelectedApplicationStatus}
+            filterType={filterTypes.applicationStatusFilter}
+          />
+          <Filter
+            selectedOption={selectedMonth}
+            setSelectedOption={setSelectedMonth}
+            filterType={filterTypes.monthFilters}
+          />
         </div>
-
-        <Filter title="Sort By Date" filterOptions={statusFilter} />
+        <Filter
+          selectedOption={selectedSortFilter}
+          setSelectedOption={setSelectedSortFilter}
+          filterType={filterTypes.orderFilters}
+        />
       </div>
     </div>
   );
