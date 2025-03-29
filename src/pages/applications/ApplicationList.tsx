@@ -1,8 +1,27 @@
 import { useState } from 'react';
 import Rahul from '../../assets/rahul.jpeg';
 import { Filter } from './Filter/Filter';
-import { APPLICATION_STATUS, filterTypes, MONTHS, ORDER } from './Filter/utils';
+
 import SearchBar from './SearchBar';
+import { applicationsFromAPI } from '../../data';
+import ApplicationItem from './ApplicationItem';
+import {
+  APPLICATION_STATUS,
+  filterTypes,
+  MONTHS,
+  ORDER,
+} from '../../utils/filterEnums';
+
+export interface Application {
+  id: number;
+  company: string;
+  position: string;
+  status: APPLICATION_STATUS;
+  appliedDate: string;
+  platform: string;
+  notes: string;
+  link: string;
+}
 
 const ApplicationList = () => {
   const [selectedApplicationStatus, setSelectedApplicationStatus] =
@@ -15,7 +34,7 @@ const ApplicationList = () => {
   const [searchValue, setSearchValue] = useState('');
 
   return (
-    <div className="col-span-5 flex h-full flex-col gap-4 px-4">
+    <div className="col-span-5 flex h-full flex-col gap-4 overflow-hidden px-4">
       {/* Title */}
       <div className="flex items-center justify-between px-2 py-2">
         <div className="">
@@ -63,6 +82,28 @@ const ApplicationList = () => {
           setSelectedOption={setSelectedSortFilter}
           filterType={filterTypes.orderFilters}
         />
+      </div>
+
+      {/* Applications */}
+      <div className="flex flex-1 flex-col overflow-hidden">
+        {/* Coloumn Header */}
+        <div className="grid grid-cols-7 px-4 py-2">
+          <h3 className="text-md col-span-1">Company</h3>
+          <h3 className="text-md col-span-2">Position</h3>
+          <h3 className="text-md col-span-1">Status</h3>
+          <h3 className="text-md col-span-2">Platform</h3>
+          <h3 className="text-md col-span-1">Applied On</h3>
+        </div>
+
+        <div className="h-[1px] w-full px-4">
+          <div className="bg-line-secondary h-full"></div>
+        </div>
+
+        <div className="flex flex-1 flex-col gap-2 overflow-y-auto">
+          {applicationsFromAPI.map((application: Application) => (
+            <ApplicationItem application={application} />
+          ))}
+        </div>
       </div>
     </div>
   );

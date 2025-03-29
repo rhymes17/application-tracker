@@ -2,7 +2,7 @@ export type FilterType<T> = {
   icon: JSX.Element;
   title: string;
   enum: T;
-  color ?: string;
+  color?: string;
 };
 
 export const enum APPLICATION_STATUS {
@@ -14,7 +14,7 @@ export const enum APPLICATION_STATUS {
   REJECTED,
 }
 
-const applicationStatus: Record<
+export const applicationStatus: Record<
   APPLICATION_STATUS,
   FilterType<APPLICATION_STATUS>
 > = {
@@ -22,32 +22,37 @@ const applicationStatus: Record<
     icon: <div className="h-3 w-3 rounded-full bg-red-500" />,
     title: 'Any Status',
     enum: APPLICATION_STATUS.NONE,
+    color: '',
   },
   [APPLICATION_STATUS.APPLIED]: {
     icon: <div className="h-3 w-3 rounded-full bg-[#f0da69]" />,
     title: 'Applied',
     enum: APPLICATION_STATUS.APPLIED,
-    color: "#f0da69"
+    color: '#f0da69',
   },
   [APPLICATION_STATUS.TO_APPLY]: {
     icon: <div className="h-3 w-3 rounded-full bg-[#086b88]" />,
     title: 'To Apply',
     enum: APPLICATION_STATUS.TO_APPLY,
+    color: '#086b88',
   },
   [APPLICATION_STATUS.INTERVIEW]: {
     icon: <div className="h-3 w-3 rounded-full bg-[#c9760a]" />,
     title: 'Interview',
     enum: APPLICATION_STATUS.INTERVIEW,
+    color: '#c9760a',
   },
   [APPLICATION_STATUS.ACCEPTED]: {
     icon: <div className="h-3 w-3 rounded-full bg-[#2fa110]" />,
     title: 'Accepted',
     enum: APPLICATION_STATUS.ACCEPTED,
+    color: '#2fa110',
   },
   [APPLICATION_STATUS.REJECTED]: {
     icon: <div className="h-3 w-3 rounded-full bg-[#df0808]" />,
     title: 'Rejected',
     enum: APPLICATION_STATUS.REJECTED,
+    color: '#df0808',
   },
 };
 

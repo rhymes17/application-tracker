@@ -1,7 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
 import { IoCloseCircleSharp } from 'react-icons/io5';
-import { APPLICATION_STATUS, FilterType, MONTHS, ORDER } from './utils';
+import {
+  APPLICATION_STATUS,
+  FilterType,
+  MONTHS,
+  ORDER,
+} from '../../../utils/filterEnums';
 
 export const Filter = <T extends APPLICATION_STATUS | MONTHS | ORDER>({
   selectedOption,
@@ -37,17 +42,19 @@ export const Filter = <T extends APPLICATION_STATUS | MONTHS | ORDER>({
   return selectedOption === noneValue ? (
     <div
       ref={ref}
-      className="z-20 flex cursor-pointer flex-col gap-2"
+      className="relative z-20 flex cursor-pointer flex-col gap-2"
       onClick={() => setIsOptionModalOpen((prev) => !prev)}
     >
-      <div className="border-line-secondary flex min-w-[120px] items-center justify-between gap-4 rounded-lg border p-2">
+      <div className="border-line-secondary flex w-[135px] min-w-[120px] items-center justify-between gap-4 rounded-lg border p-2">
         <p className="text-sm font-light">
           {filterType.elementsObject[noneValue].title}
         </p>
         {isOptionModalOpen ? <IoIosArrowUp /> : <IoIosArrowDown />}
       </div>
       {isOptionModalOpen && (
-        <div className="border-line-secondary min-w-[120px] rounded-lg border px-2 py-2">
+        <div
+          className={`border-line-secondary bg-primary-bg absolute top-11 w-[135px] min-w-[120px] rounded-lg border px-2 py-2`}
+        >
           {filterOptions.map((filter, index) => (
             <FilterItem
               key={`${filter.title}:index`}
@@ -62,7 +69,7 @@ export const Filter = <T extends APPLICATION_STATUS | MONTHS | ORDER>({
     </div>
   ) : (
     <div ref={ref} className="z-20 flex cursor-pointer flex-col gap-2">
-      <div className="border-line-secondary flex min-w-[120px] items-center justify-between gap-4 rounded-lg border p-2">
+      <div className="border-line-secondary flex w-[135px] min-w-[120px] items-center justify-between gap-4 rounded-lg border p-2">
         <p className="text-sm font-normal">
           {filterType.elementsObject[selectedOption].title}
         </p>
