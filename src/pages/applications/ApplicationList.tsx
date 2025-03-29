@@ -1,8 +1,8 @@
-import { CiSearch } from 'react-icons/ci';
+import { useState } from 'react';
 import Rahul from '../../assets/rahul.jpeg';
 import { Filter } from './Filter/Filter';
-import { useState } from 'react';
 import { APPLICATION_STATUS, filterTypes, MONTHS, ORDER } from './Filter/utils';
+import SearchBar from './SearchBar';
 
 const ApplicationList = () => {
   const [selectedApplicationStatus, setSelectedApplicationStatus] =
@@ -12,6 +12,8 @@ const ApplicationList = () => {
     ORDER.NONE,
   );
 
+  const [searchValue, setSearchValue] = useState('');
+
   return (
     <div className="col-span-5 flex h-full flex-col gap-4 px-4">
       {/* Title */}
@@ -20,10 +22,13 @@ const ApplicationList = () => {
           <h1 className="text-3xl font-[350]">Applications</h1>
         </div>
         <div className="flex items-center gap-3">
-          <div className="border-line-secondary rounded-lg border-[1px] p-2">
-            <CiSearch className="text-xl" />
-          </div>
+          {/* Search Bar */}
+          <SearchBar
+            searchValue={searchValue}
+            setSearchValue={setSearchValue}
+          />
 
+          {/* User info */}
           <div className="border-thin border-line-secondary flex h-[45px] w-[45px] items-center justify-center rounded-full border">
             <img
               className="aspect-square rounded-full object-cover"
