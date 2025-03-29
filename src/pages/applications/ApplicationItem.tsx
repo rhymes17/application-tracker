@@ -1,11 +1,22 @@
 import { applicationStatus } from '../../utils/filterEnums';
 import { Application } from './ApplicationList';
 
-const ApplicationItem = ({ application }: { application: Application }) => {
+const ApplicationItem = ({
+  application,
+  selectedApplication,
+  setSelectedApplication,
+}: {
+  application: Application;
+  selectedApplication: Application | null;
+  setSelectedApplication: React.Dispatch<
+    React.SetStateAction<Application | null>
+  >;
+}) => {
   return (
     <div
       key={application.id}
-      className="grid cursor-pointer grid-cols-7 grid-rows-1 gap-x-2 rounded-xl px-4 py-3 hover:bg-white"
+      className={`transition-all ease-in-out duration-200 grid cursor-pointer grid-cols-7 grid-rows-1 gap-x-2 rounded-xl px-4 py-3 hover:scale-101 ${selectedApplication && selectedApplication.id === application.id ? 'scale-101 bg-white' : ''}`}
+      onClick={() => setSelectedApplication(application)}
     >
       <div className="text-md col-span-1 flex items-center">
         {application.company}

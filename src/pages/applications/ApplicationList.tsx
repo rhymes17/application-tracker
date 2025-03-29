@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Rahul from '../../assets/rahul.jpeg';
 import { Filter } from './Filter/Filter';
 
@@ -23,7 +23,15 @@ export interface Application {
   link: string;
 }
 
-const ApplicationList = () => {
+const ApplicationList = ({
+  selectedApplication,
+  setSelectedApplication,
+}: {
+  selectedApplication: Application | null;
+  setSelectedApplication: React.Dispatch<
+    React.SetStateAction<Application | null>
+  >;
+}) => {
   const [selectedApplicationStatus, setSelectedApplicationStatus] =
     useState<APPLICATION_STATUS>(APPLICATION_STATUS.NONE);
   const [selectedMonth, setSelectedMonth] = useState<MONTHS>(MONTHS.NONE);
@@ -32,6 +40,35 @@ const ApplicationList = () => {
   );
 
   const [searchValue, setSearchValue] = useState('');
+
+  const [applicationInView, setApplicationInView] =
+    useState<Application[]>(applicationsFromAPI);
+
+  useEffect(() => {
+    let statusFilteredApplications = applicationsFromAPI;
+    if (selectedApplicationStatus)
+      statusFilteredApplications = applicationsFromAPI.filter(
+        (application: Application) =>
+          application.status === selectedApplicationStatus,
+      );
+    else {
+      statusFilteredApplications = [...applicationsFromAPI];
+    }
+
+    let searchedValues = statusFilteredApplications;
+
+    if (searchValue) {
+      searchedValues = statusFilteredApplications.filter(
+        (application: Application) =>
+          application.company.includes(searchValue) ||
+          application.position.includes(searchValue),
+      );
+    } else {
+      searchedValues = [...statusFilteredApplications];
+    }
+
+    setApplicationInView(searchedValues);
+  }, [selectedApplicationStatus, searchValue]);
 
   return (
     <div className="col-span-5 flex h-full flex-col gap-4 overflow-hidden px-4">
@@ -100,8 +137,12 @@ const ApplicationList = () => {
         </div>
 
         <div className="flex flex-1 flex-col gap-2 overflow-y-auto">
-          {applicationsFromAPI.map((application: Application) => (
-            <ApplicationItem application={application} />
+          {applicationInView.map((application: Application) => (
+            <ApplicationItem
+              application={application}
+              selectedApplication={selectedApplication}
+              setSelectedApplication={setSelectedApplication}
+            />
           ))}
         </div>
       </div>
