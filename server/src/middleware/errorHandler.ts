@@ -1,31 +1,29 @@
-import { ErrorRequestHandler, NextFunction, Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 
-const notFound = (req: Request, res: Response, next: NextFunction) => {
-  const error = new Error(`Not Found - ${req.originalUrl}`);
+export class AppError extends Error {
+  statusCode: number;
 
-  res.status(404);
-  next(error);
-};
+  constructor(message: string, statusCode: number = 400) {
+    super(message);
+    this.statusCode = statusCode;
 
-const errorHandler = (
+    // This helps capture the stack trace properly
+    Error.captureStackTrace(this, this.constructor);
+  }
+}
+
+export const errorHandler = (
   err: Error,
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  let statusCode = res.statusCode === 200 ? 500 : res.statusCode;
+  console.error(err.stack);
 
-  let message = err.message;
-
-  if (err.name === "CastError" && err.kind === "ObjectId") {
-    message = "Resource Not Found";
-    statusCode = 404;
-  }
+  const statusCode = "statusCode" in err ? (err as any).statusCode : 500;
 
   res.status(statusCode).json({
-    message,
-    stack: process.env.NODE_ENV === "production" ? null : err.stack,
+    success: false,
+    error: err.message || "Something went wrong",
   });
 };
-
-export { notFound, errorHandler };
